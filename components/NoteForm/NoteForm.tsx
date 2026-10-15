@@ -59,7 +59,13 @@ export default function NoteForm() {
       return;
     }
 
-    await mutateAsync(values);
+    try {
+      await mutateAsync(values);
+    } catch {
+      // onError already showed a toast; stay on the form with the draft intact
+      return;
+    }
+
     clearDraft();
     router.back();
   };

@@ -7,7 +7,7 @@ import Pagination from "@/components/Pagination/Pagination";
 import Loader from "@/components/Loader/Loader";
 import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { fetchNotes, deleteNote } from "@/lib/api";
 import { useState, useEffect } from "react";
@@ -15,6 +15,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDebouncedCallback } from "use-debounce";
 import { NoteTag } from "@/types/note";
 import Link from "next/link";
+import { notesKey, PER_PAGE } from "@/lib/queryKeys";
 
 interface NotesProps {
   tag?: NoteTag;
@@ -24,11 +25,10 @@ export default function Notes({ tag }: NotesProps) {
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState("");
   const [search, setSearch] = useState(``);
-  const perPage = 12;
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["getNotes", search, page, tag ?? "all"],
-    queryFn: () => fetchNotes({ search, page, perPage, tag }),
+    queryKey: notesKey(tag, search, page),
+    queryFn: () => fetchNotes({ search, page, perPage: PER_PAGE, tag }),
     placeholderData: keepPreviousData,
   });
 
@@ -65,7 +65,6 @@ export default function Notes({ tag }: NotesProps) {
 
   return (
     <div className={css.app}>
-      <Toaster position="top-right" />
       <header className={css.toolbar}>
         <SearchBox query={inputValue} onChange={handleSearchChange} />
         {totalPages > 1 && (

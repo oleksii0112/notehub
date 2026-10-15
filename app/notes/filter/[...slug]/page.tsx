@@ -7,6 +7,7 @@ import { fetchNotes } from "@/lib/api";
 import Notes from "./Notes.client";
 import { NoteTag } from "@/types/note";
 import { Metadata } from "next";
+import { notesKey, PER_PAGE } from "@/lib/queryKeys";
 
 type Props = {
   params: Promise<{ slug?: string[] }>;
@@ -47,8 +48,8 @@ export default async function FilterNotesPage({ params }: Props) {
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ["getNotes", tag ?? "all", "", 1],
-    queryFn: () => fetchNotes({ search: "", page: 1, perPage: 12, tag }),
+    queryKey: notesKey(tag),
+    queryFn: () => fetchNotes({ search: "", page: 1, perPage: PER_PAGE, tag }),
   });
 
   return (

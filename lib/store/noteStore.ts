@@ -1,4 +1,3 @@
-// app/lib/stores/noteStore.ts
 import { persist } from "zustand/middleware";
 import { create } from "zustand";
 import type { NoteTag } from "@/types/note";

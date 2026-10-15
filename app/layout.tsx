@@ -5,6 +5,7 @@ import "modern-normalize/modern-normalize.css";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import { Toaster } from "react-hot-toast";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -13,9 +14,8 @@ const roboto = Roboto({
   display: "swap",
 });
 
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://notehub.com"),
+  metadataBase: new URL("https://notehub-lite.vercel.app"),
   title: "NoteHub",
   description:
     "NoteHub is a simple and efficient application designed for managing personal notes.",
@@ -46,6 +46,7 @@ export default function RootLayout({ children, modal }: LayoutProps<"/">) {
           {children}
           {modal}
           <Footer></Footer>
+          <Toaster position="top-right" />
         </TanStackProvider>
       </body>
     </html>
